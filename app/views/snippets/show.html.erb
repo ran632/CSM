@@ -1,0 +1,36 @@
+<%- model_class = Snippet -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
+  <dd><%= @snippet.title %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:code) %>:</strong></dt>
+  <dd class="code">
+    <pre>
+      <code class="<%= @snippet.syntax %>"><%= @snippet.code.gsub("\n", '') %></code>
+    </pre>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:syntax) %>:</strong></dt>
+  <dd><%= @snippet.syntax %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:privacy_setting) %>:</strong></dt>
+  <dd><%= @snippet.privacy_setting.titleize %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
+  <dd><%= @snippet.user.name %></dd>
+  <dt><strong>Snippet's URL:</strong></dt>
+  <dd><%= link_to snippet_url(@snippet) %></dd>
+</dl>
+  <%= link_to 'Back',
+                snippets_path, :class => 'btn btn-default'  %>
+  <%= link_to 'Clone',
+                snippet_clone_path(@snippet), method: :post, :class => 'btn btn-default'  %>
+<% if can? :manage, @snippet %>
+  <%= link_to 'Edit',
+                edit_snippet_path(@snippet), :class => 'btn btn-default' %>
+  <%= link_to 'Delete',
+                snippet_path(@snippet),
+                :method => 'delete',
+                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                :class => 'btn btn-danger' %>
+<% end %>

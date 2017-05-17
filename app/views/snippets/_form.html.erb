@@ -1,0 +1,55 @@
+<%= form_for @snippet, :html => { :class => "form-horizontal snippet" } do |f| %>
+
+  <% if @snippet.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@snippet.errors.count, "error") %> prohibited this snippet from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @snippet.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :title, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:title) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :code, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_area :code, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:code) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :syntax, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :syntax, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:syntax) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :privacy_setting, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.select :privacy_setting, Snippet.privacy_settings.keys.map{ |ps| [ps.titleize, ps] }, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:privacy_setting) %>
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                snippets_path, :class => 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>

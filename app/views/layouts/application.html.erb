@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Csm</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+          CSM
+        </a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <% if user_signed_in? %>
+          <li>
+            <%= link_to('New Snippet', new_snippet_path) %>
+          </li>
+          <li>
+            <%= link_to('My Snippets', user_snippets_path(current_user)) %>
+          </li>
+          <li>
+         		<%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+         	</li>
+        <% else %>
+         	<li>
+         		<%= link_to('Login', new_user_session_path)  %>
+         	</li>
+         <% end %>
+      </ul>
+      </div>
+    </div>
+  </nav>
+  <%#= flash_messages %>
+  <div class="col-md-offset-2 col-md-8">
+    <% flash.each do |key, value| %>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <div class="flash <%= key %> alert alert-info alert-dismissable"><%= value %></div>
+    <% end %>
+    <%= yield %>
+  </div>
+
+</body>
+</html>

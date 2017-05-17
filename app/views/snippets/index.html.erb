@@ -1,0 +1,44 @@
+<%- model_class = Snippet -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:title) %></th>
+      <th><%= model_class.human_attribute_name(:syntax) %></th>
+      <th><%= model_class.human_attribute_name(:privacy_setting) %></th>
+      <th><%= model_class.human_attribute_name(:user_id) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @snippets.each do |snippet| %>
+      <tr>
+        <td><%= link_to snippet.title, snippet_path(snippet), class: "btn btn-xs btn-success" %></td>
+        <td><%= snippet.syntax %></td>
+        <td><%= snippet.privacy_setting.titleize %></td>
+        <td><%= link_to snippet.user.name, user_snippets_path(snippet.user), class: "btn btn-xs btn-primary" %></td>
+        <td><%=l snippet.created_at %></td>
+        <td><%=l snippet.updated_at %></td>
+        <td>
+          <% if can?(:read, snippet) %>
+            <%= link_to 'Clone',
+                        snippet_clone_path(snippet), :class => 'btn btn-default btn-xs' %>
+          <% end %>
+          <% if can?(:manage, snippet) %>
+            <%= link_to 'Edit',
+                        edit_snippet_path(snippet), :class => 'btn btn-default btn-xs' %>
+            <%= link_to 'Delete',
+                        snippet_path(snippet),
+                        :method => :delete,
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-xs btn-danger' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
